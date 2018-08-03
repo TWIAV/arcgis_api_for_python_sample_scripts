@@ -45,16 +45,18 @@ service_thumbnail_path = ''
 # =========================================================================================================================================
 
 print('===================')
-print(str(datetime.datetime.now()) + ' - Start')
+print('The script that is running: ' + __file__)
 print('First you have to log in to ArcGIS Online')
 
 # Log in
 username, password = provide_credentials()
 my_agol = GIS("https://www.arcgis.com", username, password)
 
+print ("Start: "+datetime.datetime.today().strftime('%c'))
+
 # Add input File Geodatabase
 filegdb = my_agol.content.add({"type" : "File Geodatabase"}, data)
-print(str(datetime.datetime.now()) + " - Input FGDB has been added to content on ArcGIS Online")
+print(datetime.datetime.today().strftime('%c') + " - Input FGDB has been added to content on ArcGIS Online")
 wait = input("Optionally: check your content - PRESS ENTER TO CONTINUE")
 
 # Publish the FeatureServer
@@ -65,7 +67,7 @@ srv_publish_parameters = {'name' : service_name,
 
 published_service = filegdb.publish(publish_parameters=srv_publish_parameters)
 
-print(str(datetime.datetime.now()) + " - Service has been published on ArcGIS Online")
+print(datetime.datetime.today().strftime('%c') + " - Service has been published on ArcGIS Online")
 wait = input("Optionally: check your content - PRESS ENTER TO CONTINUE")
 
 # Update description of the service item
@@ -77,13 +79,13 @@ item_properties = {'snippet' : service_snippet,
                    'tags' : service_tags}
 
 if published_service.update(item_properties, thumbnail=service_thumbnail_path):
-    print(str(datetime.datetime.now()) + " - The item properties and the thumbnail of the published service have been updated")
+    print(datetime.datetime.today().strftime('%c') + " - The item properties and the thumbnail of the published service have been updated")
 wait = input("Optionally: check your content - PRESS ENTER TO CONTINUE")
 
 # Remove the input File Geodatabase from ArcGIS Online (as it is no longer needed)
 if my_agol.content.delete_items([filegdb]):
-    print(str(datetime.datetime.now()) + " - The input FGDB has been deleted from the content on ArcGIS Online")
+    print(datetime.datetime.today().strftime('%c') + " - The input FGDB has been deleted from the content on ArcGIS Online")
 
 print('===================')
-print(str(datetime.datetime.now()) + " - Your Feature Layer has been published")
+print(datetime.datetime.today().strftime('%c') + " - Your Feature Layer has been published")
 print('===================')
